@@ -32,6 +32,7 @@ export default function Header() {
                         <Link className="hover:text-gray-900 transition " href={"/"}>Home</Link>
                         <Link className="hover:text-gray-900 transition" href={'/shop'}>Shop</Link>
                         <Link className="hover:text-gray-900 transition" href={'/contact'}>Contact</Link>
+                        <button onClick={() => router.push('/dashboard')} className="text-xs border px-4 py-1.5 rounded-full">Admin Dashboard</button>
                     </div>
 
 

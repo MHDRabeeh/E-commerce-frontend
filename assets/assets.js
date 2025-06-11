@@ -6,6 +6,9 @@ import star_icon from './star_icon.svg'
 import star_dull_icon from './star_dull_icon.svg'
 import heart_icon from './heart_icon.svg'
 import logo from './logo.png'
+import increase_arrow from './increase_arrow.svg';
+import decrease_arrow from './decrease_arrow.svg'
+import left_arrow from './left-arrow.png';
 
 export const assets = {
    
@@ -16,7 +19,10 @@ export const assets = {
     star_icon,
     star_dull_icon,
     heart_icon,
-    logo
+    logo,
+    increase_arrow,
+    decrease_arrow,
+    left_arrow
  
    
     

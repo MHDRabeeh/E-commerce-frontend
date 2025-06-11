@@ -7,7 +7,7 @@ export default function ProductCard() {
             <div className="border-r relative border-gray-300 rounded-tr-lg overflow-hidden">
                 <Image
                 className="hover:scale-105 transition object-cover"
-                 src={assets.casual} alt="" />
+                 src={assets.formal} alt="" />
                   <button className="absolute top-2 right-2 bg-white p-2 rounded-full shadow-md">
                     <Image
                         className="h-3 w-3"
