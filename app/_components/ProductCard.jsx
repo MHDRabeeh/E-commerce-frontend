@@ -1,9 +1,12 @@
+"use client"
 import Image from "next/image";
 import { assets } from "@/assets/assets";
+import { useRouter } from "next/navigation";
 
-export default function ProductCard() {
+export default function ProductCard({item}) {
+    const router = useRouter()
     return (
-        <div className="flex flex-col gap-1 max-w-xs   p-2">
+        <div onClick={()=>router.push("/product-details/79868")} key={item} className="flex flex-col gap-1 max-w-xs   p-2">
             <div className="border-r relative border-gray-300 rounded-tr-lg overflow-hidden">
                 <Image
                 className="hover:scale-105 transition object-cover"
