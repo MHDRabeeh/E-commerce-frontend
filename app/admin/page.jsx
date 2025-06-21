@@ -5,76 +5,106 @@ import { DataGrid } from '@mui/x-data-grid';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
 import { useEffect } from 'react'
+import { fetchProduct } from '../store/featuers/productSlice';
+import { useDispatch } from 'react-redux';
+import { Button } from '@mui/material';
 export default function Dashboard() {
 
-  const products = useSelector((state) => (state.products))
+  const dispatch = useDispatch()
+  const { error, products, loading } = useSelector((state) => (state.products))
 
-  const fectchProduct = async () => {
-    try {
-      console.log("it's working");
-      
-      const {data} = await axios.get(`${process.env.NEXT_PUBLIC_BASE_URL}/api/get`);
 
-      console.log(data);
+  console.log(error, products, loading, "this is from here");
 
-    } catch (error) {
-      console.log(error);
 
-    }
-  }
 
+
+  // const productList 
+  // const products = useSelector((state) => (state.products))
   useEffect(() => {
-    fectchProduct()
+    dispatch(fetchProduct())
   }, [])
 
 
+
   const columns = [
-    { field: 'id', headerName: 'ID', width: 90 },
+    { field: "name", headerName: "Name", width: 180, sortable: true },
+    { field: "description", headerName: "Description", width: 250 },
+    { field: "price", headerName: "Price", width: 100, sortable: true },
     {
-      field: 'firstName',
-      headerName: 'First name',
+      field: "variantColors",
+      headerName: "Colors",
       width: 150,
-      editable: true,
+      valueGetter: (params) => {
+        console.log(params?.row?.variants, "colors");
+        return params?.row?.variants?.map((v) => v.color).join(", ");
+      }
     },
     {
-      field: 'lastName',
-      headerName: 'Last name',
-      width: 150,
-      editable: true,
+      field: "variantStock",
+      headerName: "Stock",
+      width: 120,
+      valueGetter: (params) => {
+        console.log(params, "this is from variant stock");
+
+      }
+
     },
     {
-      field: 'age',
-      headerName: 'Age',
-      type: 'number',
-      width: 110,
-      editable: true,
+      field: "variantImages",
+      headerName: "Images",
+      width: 180,
+      renderCell: (params) => (
+        <Box sx={{ display: "flex", gap: 1, margin: 1 }}>
+          {params?.row?.variants?.map((v) => (
+            <img
+              key={v._id}
+              src={v.image}
+              alt={v.color}
+              width={40}
+              height={40}
+              style={{ objectFit: "cover", borderRadius: "4px" }}
+            />
+          ))}
+        </Box>
+      ),
     },
     {
-      field: 'fullName',
-      headerName: 'Full name',
-      description: 'This column has a value getter and is not sortable.',
+      field: "actions",
+      headerName: "Actions",
+      width: 180,
       sortable: false,
-      width: 160,
-      valueGetter: (value, row) => `${row.firstName || ''} ${row.lastName || ''}`,
+      filterable: false,
+      renderCell: (params) => (
+        <>
+          <Button
+            variant="outlined"
+            size="small"
+            // onClick={() => handleEdit(params.row._id)}
+            sx={{ mr: 1 }}
+          >
+            Edit
+          </Button>
+          <Button
+            variant="outlined"
+            color="error"
+            size="small"
+          // onClick={() => handleDelete(params.row._id)}
+          >
+            Delete
+          </Button>
+        </>
+      ),
     },
   ];
-  const rows = [
-    { id: 1, lastName: 'Snow', firstName: 'Jon', age: 14 },
-    { id: 2, lastName: 'Lannister', firstName: 'Cersei', age: 31 },
-    { id: 3, lastName: 'Lannister', firstName: 'Jaime', age: 31 },
-    { id: 4, lastName: 'Stark', firstName: 'Arya', age: 11 },
-    { id: 5, lastName: 'Targaryen', firstName: 'Daenerys', age: null },
-    { id: 6, lastName: 'Melisandre', firstName: null, age: 150 },
-    { id: 7, lastName: 'Clifford', firstName: 'Ferrara', age: 44 },
-    { id: 8, lastName: 'Frances', firstName: 'Rossini', age: 36 },
-    { id: 9, lastName: 'Roxie', firstName: 'Harvey', age: 65 },
-  ];
+  const rows = products
   return (
     <div className='w-full p-2'>
       <Box sx={{ height: 400, width: '100%' }}>
         <DataGrid
           rows={rows}
           columns={columns}
+          getRowId={(row) => row._id}
           initialState={{
             pagination: {
               paginationModel: {
